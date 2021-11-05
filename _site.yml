@@ -1,0 +1,15 @@
+name: "Yay internet!"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "LinkedIn"
+      href: https://www.linkedin.com/in/kaitlyn-yuxi-wang-b556a61b8/
+    - icon: fa-envelope fa-lg
+      href: mailto:<kw2961@cumc.columbia.edu>
+    - icon: fa-github fa-lg
+      href: http://github.com/<kaitlynwyx>/
+output:
+  html_document:
+    theme: flatly
+    
