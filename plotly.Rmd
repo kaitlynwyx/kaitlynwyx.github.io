@@ -1,0 +1,65 @@
+---
+title: "plotly"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r message=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+```
+
+```{r}
+data("ny_noaa")
+
+noaa = 
+  ny_noaa %>% 
+  select(tmax, tmin, date, snow, snwd, prcp) %>% 
+  drop_na() %>% 
+  filter(
+    snow != 0,
+    stringr::str_detect(date, '2010')
+  )
+```
+
+
+## Bargraph
+```{r}
+noaa %>% 
+  separate(date, c("year", "month", "day"), sep = "-") %>% 
+  count(month) %>% 
+  plot_ly(x = ~month, y = ~n, color = ~month, type = "bar", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Number of Day")
+  )
+```
+
+## Boxplot
+
+```{r}
+noaa %>% 
+  separate(date, c("year", "month", "day"), sep = "-") %>% 
+  plot_ly(x = ~month, y = ~snwd, color = ~month,
+          type = "box", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Snow Depth (mm)")
+  )
+```
+
+## Violin 
+
+```{r}
+noaa %>% 
+  separate(date, c("year", "month", "day"), sep = "-") %>% 
+  plot_ly(x = ~month, y = ~snwd, color = ~month,
+          type = "violin", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Snow Depth (mm)")
+  )
+```

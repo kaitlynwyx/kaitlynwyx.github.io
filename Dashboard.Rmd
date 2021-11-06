@@ -1,0 +1,77 @@
+---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+
+library(flexdashboard)
+```
+
+
+```{r}
+data("ny_noaa")
+
+noaa = 
+  ny_noaa %>% 
+  select(tmax, tmin, date, snow, snwd, prcp) %>% 
+  drop_na() %>% 
+  filter(
+    snow != 0,
+    stringr::str_detect(date, '2010')
+  )
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+noaa %>% 
+  separate(date, c("year", "month", "day"), sep = "-") %>% 
+  count(month) %>% 
+  plot_ly(x = ~month, y = ~n, color = ~month, type = "bar", colors = "viridis")%>% 
+  layout(
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Number of Day")
+  )
+```
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+noaa %>% 
+  separate(date, c("year", "month", "day"), sep = "-") %>% 
+  plot_ly(x = ~month, y = ~snwd, color = ~month,
+          type = "box", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Snow Depth (mm)")
+  )
+```
+
+### Chart C
+
+```{r}
+noaa %>% 
+  separate(date, c("year", "month", "day"), sep = "-") %>% 
+  plot_ly(x = ~month, y = ~snwd, color = ~month,
+          type = "violin", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Snow Depth (mm)")
+  )
+```
+
